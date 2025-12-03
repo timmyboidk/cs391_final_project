@@ -1,15 +1,16 @@
+// Footer.tsx
+// Component for the footer content of our web app
 
-// footer section of main page
+// main footer section function...
 export default function Footer(){
     return(
-        <footer className="mt-16 pt-8 pb-4 text-center border-t-2" style={{ borderColor: '#fcd5ce' }}>
-            <p className="text-sm" style={{ color: '#8b7b6b' }}>
-            © {new Date().getFullYear()} Natalie King & CS391 Team. All rights reserved.
+        <footer className="pt-4 pb-4 text-center border-b-4 border-t-4 border-green-800">
+            <p className="text-sm text-black">
+                All rights reserved by Natalie King, Alex Olson, Zachary Memoli, & Tim Zaiyang © 2025
             </p>
-            <p className="text-xs mt-2" style={{ color: '#ababab' }}>
-            Made with 💖 and pastel colors
+            <p className="text-xs p-1 text-black">
+                Final Project for CS391A Web Application Development
             </p>
         </footer>
     )
-    
 }
