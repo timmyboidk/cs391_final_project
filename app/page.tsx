@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Legend from "@/app/components/Legend";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
         <Header/>
           <p className="text-black text-2xl"> rest of components/content </p>
         <Footer/>
+        <Legend/>
       </div>
   );
 }
