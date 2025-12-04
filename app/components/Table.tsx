@@ -43,6 +43,26 @@ export default function Table() {
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
 
+    // creating a hook of which attribute to sort by (starting just with name we can change if we want)
+    const [sortKey, setSortKey] = useState<keyof GameWithEV>('name');
+    // using another hook to decide what direction to sort (ascending or descending)
+    const [sortDir, setSortDir] = useState<'ascending' | 'descending'>('ascending');
+
+    // operation to decide which direction we are sorting based on column
+    // toggles direction if we are sorting again by current key (else resets for new col)
+    const colSort = (key: keyof GameWithEV) => {
+        if (sortKey === key) {
+            if (sortDir === 'ascending') {
+                setSortDir('descending');
+            } else {
+                setSortDir('ascending');
+            }
+            return;
+        }
+        setSortDir('ascending');
+        setSortKey(key);
+    }
+
     useEffect(() => {
         async function load() {
             try {
@@ -94,6 +114,28 @@ export default function Table() {
         return nameMatch || numberMatch || priceMatch;
     });
 
+    // sorting using the hooks and comparisons...
+    const sorted = [...filteredGames].sort((a, b) => {
+        const v1 = a[sortKey];
+        const v2 = b[sortKey];
+        // consulted documentation on type checking in React (typeof)
+        if (typeof v2 === "string" && typeof v1 === "string") {
+            if (sortDir === "ascending") {
+                return v1.localeCompare(v2)
+            } else {
+                return v2.localeCompare(v1)
+            }
+        }
+        // if we get here its a number not string...
+        const n1 = Number(v1);
+        const n2 = Number(v2);
+        if (sortDir === "ascending") {
+            return n1 - n2;
+        } else {
+            return n2 - n1;
+        }
+    });
+
     return (
         <div className="mt-12 font-mono mx-auto max-w-4xl border-4 border-green-800 bg-white p-6">
             <div className="flex justify-between items-baseline mb-2 border-b-4 border-green-800 pb-2">
@@ -117,19 +159,19 @@ export default function Table() {
                 <table className="w-full border-collapse">
                     <thead>
                     <tr className="bg-green-800 text-white">
-                        <th className="p-3 border-2 border-green-900">Game</th>
-                        <th className="p-3 border-2 border-green-900">Price</th>
-                        <th className="p-3 border-2 border-green-900">Odds</th>
-                        <th className="p-3 border-2 border-green-900">Initial EV</th>
-                        <th className="p-3 border-2 border-green-900">Current EV</th>
-                        <th className="p-3 border-2 border-green-900">EV per $</th>
-                        <th className="p-3 border-2 border-green-900">Current Net</th>
+                        <th onClick={()=> colSort("name")} className="p-3 border-2 border-green-900">Game</th>
+                        <th onClick={()=> colSort("price")} className="p-3 border-2 border-green-900">Price</th>
+                        <th onClick={()=> colSort("overallOddsValue")} className="p-3 border-2 border-green-900">Odds</th>
+                        <th onClick={()=> colSort("initialEV")} className="p-3 border-2 border-green-900">Initial EV</th>
+                        <th onClick={()=> colSort("currentEV")} className="p-3 border-2 border-green-900">Current EV</th>
+                        <th onClick={()=> colSort("evPerDollar")} className="p-3 border-2 border-green-900">EV per $</th>
+                        <th onClick={()=> colSort("netCurrentEV")} className="p-3 border-2 border-green-900">Current Net</th>
                         <th className="p-3 border-2 border-green-900">Link</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    {filteredGames.map((game, idx) => (
+                    {sorted.map((game, idx) => (
                         <tr
                             key={game.gameNumber}
                             className={idx % 2 === 0 ? "bg-green-50" : "bg-green-100"}

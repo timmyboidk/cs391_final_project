@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="28079752-32f9-433b-83bb-98e2a41d27cb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/snapshot/route.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/InstantAnalytics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/InstantAnalytics.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/Legend.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Legend.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/instantanalytics/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/Table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +45,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "Tim__feat",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
@@ -61,7 +58,7 @@
     "nodejs_package_manager_path": "npm",
     "npm.Next.js: server-side.executor": "Run",
     "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/timyu/Desktop/HW/cs391_final_project/node_modules/typescript/lib",
+    "ts.external.directory.path": "C:\\Users\\19083\\WebstormProjects\\cs391_final_project\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
