@@ -1,7 +1,7 @@
 /*
  * Database Configuration: MongoDB Connection
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Zachary Memoli
  *
  * Description:
  * Manages the connection pool to the MongoDB database.
