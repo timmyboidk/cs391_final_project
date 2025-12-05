@@ -1,13 +1,13 @@
 /*
  * Component: Footer
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
- * Description: Static footer displaying copyright and team members.
+ * Responsible: Alex Olson
+ * Description: Created and styled footer component
  * ----------------------------------------------------------------------------
  */
 
 // Footer.tsx
-// Component for the footer content of our web app
+// Component for the footer content of our app...
 
 // main footer section function...
 export default function Footer(){

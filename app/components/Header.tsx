@@ -1,15 +1,15 @@
 /*
  * Component: Header
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
- * Description: Static header component displaying the branding and logo.
+ * Responsible: Alex Olson
+ * Description: Created and styled header component / created logo image
  * ----------------------------------------------------------------------------
  */
 
 // Header.tsx
-// Component for the Header content of our web app
+// Component for the Header content of our app...
 
-// imports for displaying our lgoo
+// imports for displaying our logo image...
 import Image from "next/image";
 import mm from "@/app/media/mass-money-logo.png";
 

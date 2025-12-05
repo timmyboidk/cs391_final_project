@@ -1,11 +1,11 @@
 /*
  * Component: Data Table
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Alex Olson
+ * Description: Created table template/styling and implemented column sorting
  *
- * Description:
- * This component fetches and displays the full dataset of scratcher games.
- * It includes interactive features like sorting by column and filtering via search.
+ * Responsible: Natalie King
+ * Description: Retrieved and cleaned data in the backend ready to be sorted for the table
  *
  * Logic & Reasoning:
  * 1. Data Fetching: We use `useEffect` to fetch from our internal API (/api/games).
@@ -18,6 +18,9 @@
  * user input before mapping it to the DOM.
  * ----------------------------------------------------------------------------
  */
+
+// Table.tsx
+// Main Data Table Element for our Lottery Data...
 
 "use client";
 
