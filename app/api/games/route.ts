@@ -1,7 +1,7 @@
 /*
  * API Route: GET /api/games
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Natalie King, Zaiyang Yu
  *
  * Description:
  * Server-side API endpoint that handles data retrieval for the frontend.

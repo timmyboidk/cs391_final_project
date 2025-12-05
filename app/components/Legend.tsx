@@ -1,7 +1,7 @@
 /*
- * Component: Legend by Zaiyang Yu
+ * Component: Legend
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Zaiyang Yu
  *
  * Description:
  * A static informational component that explains the terminology and metrics

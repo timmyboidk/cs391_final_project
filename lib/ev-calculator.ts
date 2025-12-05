@@ -1,7 +1,7 @@
 /*
  * Library: Expected Value (EV) Calculator
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Natalie King
  *
  * Description:
  * A pure utility module that performs the mathematical heavy lifting for the project.

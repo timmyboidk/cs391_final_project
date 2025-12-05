@@ -1,7 +1,7 @@
 /*
  * Library: Web Scraper Module
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Natalie King
  *
  * Description:
  * This module is responsible for navigating the Massachusetts Lottery website

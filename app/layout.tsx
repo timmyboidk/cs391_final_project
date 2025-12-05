@@ -1,7 +1,7 @@
 /*
  * Global Layout: Root Layout
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: whole team
  *
  * Description:
  * This is the root layout component that wraps every page in the application.

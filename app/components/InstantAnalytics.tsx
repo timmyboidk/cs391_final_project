@@ -1,7 +1,7 @@
 /*
- * Component: Instant Market Analytics by Zaiyang Yu
+ * Component: Instant Market Analytics
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Zaiyang Yu
  *
  * Description:
  * A dashboard widget that processes raw game data into actionable insights:

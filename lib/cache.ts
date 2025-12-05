@@ -1,7 +1,7 @@
 /*
  * Library: In-Memory Cache Utility
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Natalie King
  *
  * Description:
  * A simple in-memory caching class to store temporary data.

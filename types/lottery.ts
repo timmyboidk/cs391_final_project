@@ -1,7 +1,7 @@
 /*
  * Type Definitions: Lottery Interfaces
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Natalie King
  *
  * Description:
  * Centralized TypeScript interfaces for the project's data structures.
