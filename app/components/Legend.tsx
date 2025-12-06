@@ -27,7 +27,6 @@ export default function Legend(){
             </div>
 
             <dl className="space-y-4">
-                {/* Each item now uses green borders and backgrounds instead of pastel custom hex codes */}
                 <div className="p-4 border-2 border-green-800 bg-green-50">
                     <dt className="font-bold mb-1 text-black underline decoration-green-400 decoration-4"> Initial EV:</dt>
                     <dd className="text-green-900">
@@ -86,7 +85,6 @@ export default function Legend(){
 
             </dl>
 
-            {/* Warning box style updated to match the footer's high contrast style */}
             <p className="mt-6 text-center text-sm p-4 bg-green-800 text-white font-bold border-t-4 border-black">
                 This calculator is for educational purposes. All lottery games have negative expected value on average. Play responsibly.
             </p>
