@@ -12,10 +12,10 @@
  * we gracefully fall back to a live scrape so the user never sees a broken page.
  * 2. Performance: We query MongoDB for the most recent snapshot (`sort: { updatedAt: -1 }`).
  * If data exists, it is returned immediately (fast).
- * 3. Freshness: We use Next.js `after()` to trigger a background scrape *after*
+ * 3. Concurrency Control: We use a global `isRefreshing` lock to ensure only one
+ * background scrape runs at a time, even if multiple components request data simultaneously.
+ * 4. Freshness: We use Next.js `after()` to trigger a background scrape *after*
  * the response is sent. This updates the DB without making the user wait.
- * 4. Force Dynamic: We export `dynamic = 'force-dynamic'` to prevent Vercel/Next.js
- * from serving static build-time data, ensuring we always hit our logic.
  * ----------------------------------------------------------------------------
  */
 
@@ -26,6 +26,9 @@ import { getAllGames } from '@/lib/scraper';
 import { calculateEVForGames } from '@/lib/ev-calculator';
 
 export const dynamic = 'force-dynamic';
+
+// Global lock to prevent multiple simultaneous scrapes
+let isRefreshing = false;
 
 export async function GET() {
     let collection = null;
@@ -43,10 +46,20 @@ export async function GET() {
         // We continue without crashing; collection remains null
     }
 
-    // Define Background Refresh Task
+    // Define Background Refresh Task with Locking
     const performBackgroundRefresh = async () => {
         if (!collection) return; // Cannot save if DB is down
+
+        // Check if a refresh is already running
+        if (isRefreshing) {
+            console.log('Background refresh already in progress. Skipping.');
+            return;
+        }
+
+        // Set the lock
+        isRefreshing = true;
         console.log('Starting background data refresh...');
+
         try {
             const rawGames = await getAllGames();
             const gamesWithEV = calculateEVForGames(rawGames);
@@ -60,6 +73,9 @@ export async function GET() {
             console.log('Background refresh complete.');
         } catch (err) {
             console.error('Background refresh failed:', err);
+        } finally {
+            // Always release the lock, even if it fails
+            isRefreshing = false;
         }
     };
 
