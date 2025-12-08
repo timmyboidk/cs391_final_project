@@ -67,6 +67,7 @@ export default function Table() {
     //Added search useState by Zachary Memoli
     const [searchTerm, setSearchTerm] = useState("");
 
+    // Alex's sorting...
     // creating a hook of which attribute to sort by (starting just with name we can change if we want)
     const [sortKey, setSortKey] = useState<keyof GameWithEV>('name');
     // using another hook to decide what direction to sort (ascending or descending)
@@ -142,7 +143,7 @@ export default function Table() {
         return nameMatch || numberMatch || priceMatch;
     });
 
-    // sorting using the hooks and comparisons...
+    // alex sorting continued sorting using the hooks and comparisons...
     const sorted = [...filteredGames].sort((a, b) => {
         const v1 = a[sortKey];
         const v2 = b[sortKey];
