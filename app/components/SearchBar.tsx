@@ -1,7 +1,7 @@
 /*
  * Component: Search Bar
  * ----------------------------------------------------------------------------
- * Responsible: [INSERT MEMBER NAME]
+ * Responsible: Zachary Memoli
  *
  * Description:
  * A reusable UI component for filtering data tables.
@@ -18,6 +18,7 @@
 
 import React from "react";
 
+//search bar props 
 interface SearchBarProps {
     searchTerm: string;
     onSearchTermChange: (value: string) => void;
@@ -26,9 +27,7 @@ interface SearchBarProps {
     filteredGames: number;
 }
 
-
-
-
+// search bar with props
 const SearchBar: React.FC<SearchBarProps>=({
     searchTerm,
     onSearchTermChange,
@@ -46,6 +45,7 @@ const SearchBar: React.FC<SearchBarProps>=({
                         type="text"
                         placeholder="Search by game name, number, or price..."
                         value={searchTerm}
+                        //on search term change implemented here, for re-map useState in Table Component
                         onChange={(e) => onSearchTermChange(e.target.value)}
                         className="flex-1 px-4 py-3 rounded-2xl shadow-md focus:outline-none focus:shadow-lg"
                         style={{
@@ -75,7 +75,7 @@ const SearchBar: React.FC<SearchBarProps>=({
 }
     
 
-
+//export search bar to Table components
 export default SearchBar;
 
         

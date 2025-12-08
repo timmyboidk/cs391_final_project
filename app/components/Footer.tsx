@@ -1,13 +1,13 @@
 /*
  * Component: Footer
  * ----------------------------------------------------------------------------
- * Responsible: Alex Olson
- * Description: Created and styled footer component
+ * Responsible: Zachary Memoli 
+ * Description: Static footer displaying copyright and team members.
  * ----------------------------------------------------------------------------
  */
 
-// Footer.tsx - Alex's Code
-// Component for the footer content of our app...
+// Footer.tsx
+// Component for the footer content of our web app
 
 // main footer section function...
 export default function Footer(){

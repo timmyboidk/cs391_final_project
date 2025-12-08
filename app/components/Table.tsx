@@ -1,11 +1,11 @@
 /*
  * Component: Data Table
  * ----------------------------------------------------------------------------
- * Responsible: Alex Olson
- * Description: Created table template/styling and implemented column sorting
+ * Responsible: Alex Olson (Implementation, Design), Zachary Memoli (Search Implementation only)
  *
- * Responsible: Natalie King
- * Description: Retrieved and cleaned data in the backend ready to be sorted for the table
+ * Description:
+ * This component fetches and displays the full dataset of scratcher games.
+ * It includes interactive features like sorting by column and filtering via search.
  *
  * Logic & Reasoning:
  * 1. Data Fetching: We use `useEffect` to fetch from our internal API (/api/games).
@@ -18,9 +18,6 @@
  * user input before mapping it to the DOM.
  * ----------------------------------------------------------------------------
  */
-
-// Table.tsx
-// Main Data Table Element for our Lottery Data...
 
 "use client";
 
@@ -65,9 +62,10 @@ export default function Table() {
     const [data, setData] = useState<GamesResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    //Added search useState by Zachary Memoli
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Start of Alex's Sorting Code
     // creating a hook of which attribute to sort by (starting just with name we can change if we want)
     const [sortKey, setSortKey] = useState<keyof GameWithEV>('name');
     // using another hook to decide what direction to sort (ascending or descending)
@@ -87,7 +85,6 @@ export default function Table() {
         setSortDir('ascending');
         setSortKey(key);
     }
-    // End of Alex's Sorting Code
 
     useEffect(() => {
         async function load() {
@@ -126,21 +123,25 @@ export default function Table() {
     }
 
     const { games, updatedAt } = data;
-
+    //Search bar implementation here (ZM). 
+        // First set values to lowercase for unified complete filtering
     const lowerCased = searchTerm.trim().toLowerCase();
-
+        // Make filteredGames from the list of games
     const filteredGames = games.filter((game)=>{
+        // debug test
         if(!lowerCased){
              return true;
         }
+        // filter the results based on the lowerCased values (includes function, not exact)
         const nameMatch = game.name.toLowerCase().includes(lowerCased);
         const numberMatch = game.gameNumber.toLowerCase().includes(lowerCased);
         const priceMatch = game.price.toString().includes(lowerCased);
 
+        // return a mix of the matched values (will be mapped later on each searchTerm change)
         return nameMatch || numberMatch || priceMatch;
     });
 
-    // Alex's continued sorting code - sorting using the hooks and comparisons...
+    // sorting using the hooks and comparisons...
     const sorted = [...filteredGames].sort((a, b) => {
         const v1 = a[sortKey];
         const v2 = b[sortKey];
@@ -161,7 +162,6 @@ export default function Table() {
             return n2 - n1;
         }
     });
-    // End of Alex's continued Sorting Code
 
     return (
         <div className="mt-12 font-mono mx-auto max-w-4xl border-4 border-green-800 bg-white p-6">
@@ -173,7 +173,7 @@ export default function Table() {
                     Updated: {new Date(updatedAt).toLocaleString()}
                 </p>
             </div>
-
+            {/* search bar component implemented here with interface (ZM)*/}
             <SearchBar
                 searchTerm={searchTerm}
                 onSearchTermChange={setSearchTerm}
@@ -242,7 +242,7 @@ export default function Table() {
                     ))}
                     </tbody>
                 </table>
-
+                    {/* show not just games, but filtered games accoring to search bar (ZM)*/}
                 <p className="mt-3 text-xs text-center text-green-700">
                     Showing {filteredGames.length} scratch games from Mass Lottery.
                 </p>
