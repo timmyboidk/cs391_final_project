@@ -87,7 +87,7 @@ function parseNumber(text: string): number {
     return parseFloat(cleaned) || 0;
 }
 
- //Parse prize value: "$250,000" -> 250000, "Free Ticket" -> ticket price
+ //Parsing prize value from string to int. "$250,000" = 250000
 
 function parsePrizeValue(prizeText: string, ticketPrice: number): number {
     if (prizeText.toLowerCase().includes('free') || prizeText.toLowerCase().includes('ticket')) {
@@ -105,21 +105,21 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
 
         browser = await puppeteer.launch({
             headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox'] //launching puppeteer in headless mode
         });
 
         const page = await browser.newPage();
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'); //config the scraper
 
-        // Navigate to the page and wait for content to load
+        // Navigate to the page and wait for content 
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 
-        // Wait for the prize table to load
+        // Wait for the prize table specifically. Otherwise we'll timeout
         await page.waitForSelector('table, .prize-table, [class*="prize"]', { timeout: 10000 }).catch(() => {
             console.warn(`Prize table selector not found for ${url}`);
         });
 
-        // get the HTML content after JavaScript has rendered
+        // get the HTML content 
         const html = await page.content();
         const $ = cheerio.load(html);
 
@@ -128,30 +128,30 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
         let gameName = title.split('|')[0].trim();
 
         if (!gameName) {
-            // fallback: get from URL
+            // Just in case the name isn't in the page title, we can extract it from the URL
             const urlParts = url.split('/');
             gameName = urlParts[urlParts.length - 1].replace(/-/g, ' ').toUpperCase();
         }
 
-        // Extract game number from URL in the identifier
+        // Getting the game # from the url
         const urlParts = url.split('/');
         const gameNumber = urlParts[urlParts.length - 1];
 
-        // Use price from API if available, otherwise try to get from page
+        // Use price from API if available, otherwise we'll try to get it from the page. A little redundant, but with government databases its necessary. They SUCK
         const price = priceFromAPI || 0;
 
         // Get overall odds
         let overallOddsText = '1 in 1';
         let overallOddsValue = 1;
 
-        $('*').each((_, el) => {
+        $('*').each((_, el) => { 
             const text = $(el).text();
             if (text.includes('Overall Odds') || text.toLowerCase().includes('overall odds')) {
                 const match = text.match(/1\s+in\s+([\d.,]+)/i);
                 if (match) {
                     overallOddsText = `1 in ${match[1]}`;
                     overallOddsValue = parseFloat(match[1].replace(/,/g, ''));
-                    return false; // break
+                    return false; 
                 }
             }
         });
@@ -166,13 +166,13 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
             }
         });
 
-        // Parse prize table - MA Lottery format
+        // Parse prize table
         const prizeTiers: PrizeTier[] = [];
 
         $('table').each((_, table) => {
             const $table = $(table);
 
-            // Try to find header row
+            // Try to find the header row
             const headers = $table.find('th, thead td').map((_, th) =>
                 $(th).text().trim().toLowerCase()
             ).get();
@@ -181,7 +181,7 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
             const hasPrize = headers.some(h => h.includes('prize'));
 
             if (hasPrize || headers.length > 0) {
-                // comb through data rows
+                // combing through data rows
                 const rows = $table.find('tbody tr, tr').filter((_, row) => {
                     const $row = $(row);
                     return $row.find('td').length > 0;
@@ -192,34 +192,30 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
                     const cells = $row.find('td').map((_, td) => $(td).text().trim()).get();
 
                     if (cells.length >= 2) {
-                        // MA Lottery format:
-                        // Cell 0: "$250,0001 in 129,230.77 odds"
-                        // Cell 1: "39 Start9 Claimed30 Remaining"
 
                         const prizeAndOddsText = cells[0];
                         const statusText = cells[1];
 
-                        // Skip header rows
+                        // Skiping the header rows
                         if (prizeAndOddsText.toLowerCase().includes('prize')) {
                             return;
                         }
 
-                        // Extract prize amount (everything before "1 in")
+                        // Extract prize amount using regex.
                         const prizeMatch = prizeAndOddsText.match(/^(\$[\d,]+?)(?=1\s*in)/);
                         if (!prizeMatch) return;
 
                         const prizeText = prizeMatch[1];
-                        const prizeValue = parsePrizeValue(prizeText, 0); // price will be set later
+                        const prizeValue = parsePrizeValue(prizeText, 0); // temp price. Will be filled in later
 
-                        // Extract odds (after "1 in")
+                        // Extract odds using regex
                         const oddsMatch = prizeAndOddsText.match(/1\s*in\s*([\d,]+(?:\.\d+)?)/i);
                         if (!oddsMatch) return;
 
                         const odds = parseNumber(oddsMatch[1]);
                         const oddsText = `1 in ${oddsMatch[1]}`;
 
-                        // Extract start, claimed, remaining counts
-                        // Format: "39 Start9 Claimed30 Remaining" or "39 Start 9 Claimed 30 Remaining"
+                        // Extract individual counts for different prize tiers
                         const startMatch = statusText.match(/([\d,]+)\s*Start/i);
                         const claimedMatch = statusText.match(/([\d,]+)\s*Claimed/i);
                         const remainingMatch = statusText.match(/([\d,]+)\s*Remaining/i);
@@ -236,7 +232,7 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
                                 odds,
                                 oddsText,
                                 prizesAtStart,
-                                prizesRemaining
+                                prizesRemaining //compiling into prizeTiers
                             });
                         }
                     }
@@ -244,9 +240,9 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
             }
         });
 
-        await browser.close();
+        await browser.close(); //closing the puppeteer
 
-        if (prizeTiers.length === 0) {
+        if (prizeTiers.length === 0) { //we dont have any for this game
             console.warn(`No prize tiers found for ${gameName} at ${url}`);
             return null;
         }
@@ -270,9 +266,7 @@ export async function parseGamePage(url: string, priceFromAPI?: number): Promise
     }
 }
 
-/**
- * Process an array of items in batches with a concurrency limit
- */
+    //Processing an array of items in batches with a concurrency limit. Doing this because sequential is slow, and large batches will cause a timeout. 3 concurrent headless browsers seems to function fine.
 async function processBatch<T, R>(
     items: T[],
     processor: (item: T, index: number) => Promise<R>,
@@ -294,9 +288,7 @@ async function processBatch<T, R>(
     return results;
 }
 
-/**
- * Fetch all games with a limit for testing
- */
+ //Fetching all games with a limit for testing
 export async function getAllGames(limit?: number): Promise<LotteryGame[]> {
     const gameLinks = await getAllGameLinks();
     const limitedLinks = limit ? gameLinks.slice(0, limit) : gameLinks;
@@ -313,6 +305,6 @@ export async function getAllGames(limit?: number): Promise<LotteryGame[]> {
         MAX_CONCURRENT_BROWSERS
     );
 
-    // Filter out null results
+    // Filtering out any null results
     return results.filter((game): game is LotteryGame => game !== null);
 }

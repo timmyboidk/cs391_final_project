@@ -23,7 +23,7 @@
 import { LotteryGame, GameWithEV, PrizeTier } from '@/types/lottery';
 
 
-//Estimate total tickets as the median of (odds × initial prizes) across all tiers
+//Estimate total tickets as the median of odds x initial prizes across all tiers
 
 function estimateTotalTickets(prizeTiers: PrizeTier[]): number {
     const estimates = prizeTiers
@@ -32,7 +32,7 @@ function estimateTotalTickets(prizeTiers: PrizeTier[]): number {
 
     if (estimates.length === 0) return 0;
 
-    // Calculate median
+    // Calculate the median
     estimates.sort((a, b) => a - b);
     const mid = Math.floor(estimates.length / 2);
 
@@ -43,7 +43,7 @@ function estimateTotalTickets(prizeTiers: PrizeTier[]): number {
     }
 }
 
-    // Estimate remaining tickets based on remaining prizes
+    // Estimate remaining tickets based on remaining prizes. Slightly redundant, could combine both in the future.
 
 function estimateRemainingTickets(prizeTiers: PrizeTier[]): number {
     const estimates = prizeTiers
@@ -71,7 +71,7 @@ function calculateInitialPrizePool(prizeTiers: PrizeTier[]): number {
     }, 0);
 }
 
-//calculate remaining prize pool
+//calculate remaining prize pool - also redundant. Could condense into one function with a helper in the future.
 function calculateRemainingPrizePool(prizeTiers: PrizeTier[]): number {
     return prizeTiers.reduce((sum, tier) => {
         return sum + (tier.prizeValue * tier.prizesRemaining);
@@ -125,7 +125,7 @@ export function calculateEVForGame(game: LotteryGame): GameWithEV {
 }
 
 
-    //Calculate EV metrics for multiple games
+    //Big overarching wrapper to calculate ev for all games in a gamelist
 
 export function calculateEVForGames(games: LotteryGame[]): GameWithEV[] {
     return games.map(calculateEVForGame);

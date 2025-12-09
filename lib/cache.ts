@@ -53,9 +53,7 @@ class SimpleCache {
         this.cache.set(key, entry);
     }
 
-    /**
-     * Check if key exists and is not expired
-     */
+     //Check if a key exists and is not expired
     has(key: string): boolean {
         const entry = this.cache.get(key);
 
@@ -63,7 +61,7 @@ class SimpleCache {
             return false;
         }
 
-        // Check if expired
+        // Check if its expired
         if (Date.now() > entry.expiresAt) {
             this.cache.delete(key);
             return false;
@@ -100,7 +98,7 @@ class SimpleCache {
     }
 
 
-    //Clean up expired entries (optional maintenance)
+    //Clean up expired entries
 
     cleanup(): void {
         const now = Date.now();
@@ -118,6 +116,6 @@ export const cache = new SimpleCache();
 // Helper to get cache TTL from environment or use default
 export function getCacheTTL(): number {
     const envTTL = process.env.CACHE_TTL_MINUTES;
-    const minutes = envTTL ? parseInt(envTTL) : 60; // Default: 60 minutes
-    return minutes * 60 * 1000; // Convert to milliseconds
+    const minutes = envTTL ? parseInt(envTTL) : 60; // 60 min by default
+    return minutes * 60 * 1000; 
 }
